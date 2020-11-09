@@ -1,6 +1,7 @@
 package com.mukewang.spring_security_test;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    //在内存中注册用户及用户对应的密码
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.inMemoryAuthentication().passwordEncoder(new MyPasswordEncoder()).withUser("admin").password("123456").roles("ADMIN");
+        //可以在内存中加入多个用户
+        auth.inMemoryAuthentication().passwordEncoder(new MyPasswordEncoder()).withUser("user").password("123456").roles("ADMIN");
+
+        auth.inMemoryAuthentication().passwordEncoder(new MyPasswordEncoder()).withUser("gaopeng").password("123456").roles("USER");
+    }
 
     //http请求的拦截
     @Override
